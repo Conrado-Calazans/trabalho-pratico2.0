@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Favoritos - Catálogo de Filmes</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header class="header">
+        <a class="logo" href="index.html">🎬 <strong>Filmes</strong></a>
+        
+        <nav class="nav">
+            <ul class="menu">
+                <li><a href="index.html?filtro=novos">Novos</a></li>
+                <li><a href="index.html?filtro=populares">Populares</a></li>
+                <li><a href="index.html?filtro=netflix">Netflix</a></li>
+            </ul>
+        </nav>
+        
+        <div class="actions">
+            <!-- Será preenchido pelo JavaScript -->
+        </div>
+    </header>
+
+    <main>
+        <section class="favoritos-section">
+            <h2 style="text-align: center; margin: 30px 0; color: #333;">Meus Filmes Favoritos</h2>
+            <div id="lista-favoritos" class="lista">
+                <!-- Favoritos serão carregados aqui -->
+            </div>
+            <div id="sem-favoritos" style="text-align: center; margin: 50px; display: none;">
+                <p style="font-size: 18px; color: #666;">Você ainda não tem filmes favoritos.</p>
+                <p><a href="index.html" style="color: cornflowerblue; text-decoration: none;">Volte à página inicial para adicionar filmes aos favoritos</a></p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="rodape">
+        <div class="info">
+            <div class="coluna">
+                <h4>Avisos sobre a página</h4>
+                <p>Ao pesquisar um filme, digite em inglês, por favor.</p>
+                <p>Ao clicar em algum filme para obter detalhes, pode haver uma demora no carregamento, mas os detalhes serão exibidos.</p>
+            </div>
+            <div class="coluna">
+                <h4>Autoria</h4>
+                <p><strong>Aluno:</strong> Conrado Calazans</p>
+                <p><strong>Curso:</strong> Sistemas de Informação</p>
+                <p><strong>Turma:</strong> Noite</p>
+            </div>
+            <div class="coluna redes">
+                <h4>Redes Sociais</h4>
+                <a href="https://github.com/" target="_blank"><img src="/imagens/logo_github.jpg" alt="GitHub"></a>
+                <a href="https://br.linkedin.com/" target="_blank"><img src="/imagens/logo_linkedin.jpg" alt="Linkedin"></a>
+                <a href="https://www.youtube.com/" target="_blank"><img src="/imagens/logo_yt.jpg" alt="Youtube"></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/script/auth.js"></script>
+    <script src="/script/app.js"></script>
+
+    <script>
+        // Carrega favoritos quando a página carrega
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Verifica se usuário está logado
+            if (!authManager.isLogado()) {
+                alert('Você precisa estar logado para ver seus favoritos');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const listaFavoritos = document.getElementById('lista-favoritos');
+            const semFavoritos = document.getElementById('sem-favoritos');
+            
+            try {
+                const favoritos = await authManager.getFavoritos();
+                
+                if (favoritos.length === 0) {
+                    semFavoritos.style.display = 'block';
+                    return;
+                }
+                
+                // Cria cards dos favoritos
+                favoritos.forEach(favorito => {
+                    const item = document.createElement('div');
+                    item.classList.add('item');
+                    item.innerHTML = `
+                        <img src="${favorito.poster !== 'N/A' ? favorito.poster : 'imagens/sem-imagem.jpg'}" alt="${favorito.titulo}" />
+                        <h2>${favorito.titulo}</h2>
+                        <button class="btn-remover-favorito" data-filme-id="${favorito.filmeId}" style="
+                            background-color: #e74c3c;
+                            color: white;
+                            border: none;
+                            padding: 5px 10px;
+                            margin-top: 10px;
+                            border-radius: 3px;
+                            cursor: pointer;
+                        ">Remover dos Favoritos</button>
+                    `;
+                    
+                    // Click no filme para ver detalhes
+                    item.addEventListener('click', (e) => {
+                        if (!e.target.classList.contains('btn-remover-favorito')) {
+                            window.location.href = `detalhes.html?id=${favorito.filmeId}`;
+                        }
+                    });
+                    
+                    listaFavoritos.appendChild(item);
+                });
+                
+                // Event listeners para remover favoritos
+                document.querySelectorAll('.btn-remover-favorito').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        e.stopPropagation();
+                        const filmeId = e.target.dataset.filmeId;
+                        
+                        if (confirm('Deseja remover este filme dos favoritos?')) {
+                            // Simula objeto filme para usar toggleFavorito
+                            const filme = { imdbID: filmeId };
+                            await authManager.toggleFavorito(filme);
+                            
+                            // Recarrega a página
+                            window.location.reload();
+                        }
+                    });
+                });
+                
+            } catch (error) {
+                console.error('Erro ao carregar favoritos:', error);
+                listaFavoritos.innerHTML = '<p style="text-align: center; color: red;">Erro ao carregar favoritos</p>';
+            }
+        });
+    </script>
+</body>
+</html>

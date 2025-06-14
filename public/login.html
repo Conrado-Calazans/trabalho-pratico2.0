@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Catálogo de Filmes</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .container-login {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 40px;
+            border: 2px solid cornflowerblue;
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background-color: cornflowerblue;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-login:hover {
+            background-color: darkblue;
+        }
+        
+        .erro {
+            color: red;
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        .sucesso {
+            color: green;
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        .link-cadastro {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .link-cadastro a {
+            color: cornflowerblue;
+            text-decoration: none;
+        }
+        
+        .link-cadastro a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a class="logo" href="index.html">🎬 <strong>Filmes</strong></a>
+        
+        <nav class="nav">
+            <ul class="menu">
+                <li><a href="index.html?filtro=novos">Novos</a></li>
+                <li><a href="index.html?filtro=populares">Populares</a></li>
+                <li><a href="index.html?filtro=netflix">Netflix</a></li>
+            </ul>
+        </nav>
+        
+        <div class="actions">
+            <a href="cadastro.html" style="color: white; margin-right: 10px;">Cadastrar</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="container-login">
+            <h2 style="text-align: center; margin-bottom: 30px; color: #333;">Login</h2>
+            
+            <form id="form-login">
+                <div class="form-group">
+                    <label for="email">E-mail:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="senha">Senha:</label>
+                    <input type="password" id="senha" name="senha" required>
+                </div>
+                
+                <button type="submit" class="btn-login">Entrar</button>
+                
+                <div id="mensagem"></div>
+            </form>
+            
+            <div class="link-cadastro">
+                <p>Não tem conta? <a href="cadastro.html">Cadastre-se aqui</a></p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="rodape">
+        <div class="info">
+            <div class="coluna">
+                <h4>Avisos sobre a página</h4>
+                <p>Ao pesquisar um filme, digite em inglês, por favor.</p>
+                <p>Ao clicar em algum filme para obter detalhes, pode haver uma demora no carregamento, mas os detalhes serão exibidos.</p>
+            </div>
+            <div class="coluna">
+                <h4>Autoria</h4>
+                <p><strong>Aluno:</strong> Conrado Calazans</p>
+                <p><strong>Curso:</strong> Sistemas de Informação</p>
+                <p><strong>Turma:</strong> Noite</p>
+            </div>
+            <div class="coluna redes">
+                <h4>Redes Sociais</h4>
+                <a href="https://github.com/" target="_blank"><img src="/imagens/logo_github.jpg" alt="GitHub"></a>
+                <a href="https://br.linkedin.com/" target="_blank"><img src="/imagens/logo_linkedin.jpg" alt="Linkedin"></a>
+                <a href="https://www.youtube.com/" target="_blank"><img src="/imagens/logo_yt.jpg" alt="Youtube"></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/script/auth.js"></script>
+</body>
+</html>

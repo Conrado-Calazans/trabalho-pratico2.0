@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo de Filmes</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <header class="header">
+    <a class="logo" href="index.html">🎬 <strong>Filmes</strong></a>
+  
+    <nav class="nav">
+      <ul class="menu">
+        <li><a href="index.html?filtro=novos">Novos</a></li>
+        <li><a href="index.html?filtro=populares">Populares</a></li>
+        <li><a href="index.html?filtro=netflix">Netflix</a></li>
+      </ul>
+    </nav>
+  
+    <div class="actions">
+      <form id="form-pesquisa" method="GET" action="index.html">
+        <input type="text" name="pesquisa" placeholder="Buscar filme ou série" />
+        <span id="mensagem-pesquisa" style="display: none; font-size: 12px; color: red;">
+          Digite o nome do filme em inglês.
+        </span>
+        <button type="submit">🔍</button>
+      </form>
+      <!-- Links de login/logout serão inseridos pelo JavaScript -->
+    </div>
+  </header>
+  
+  <main>
+    <section class="destaques" id="secao-destaques">
+      <h2>Filmes em Destaque</h2>
+      <div class="lista-destaques"></div>
+    </section>
+
+    <section class="flex">
+      <div class="lista"></div>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    <div class="info">
+      <div class="coluna">
+        <h4>Avisos sobre a página</h4>
+        <p>Ao pesquisar um filme, digite em inglês, por favor.</p>
+        <p>Ao clicar em algum filme para obter detalhes, pode haver uma demora no carregamento, mas os detalhes serão exibidos.</p>
+        <p><strong>Novo:</strong> Faça login para favoritar seus filmes preferidos!</p>
+      </div>
+      <div class="coluna">
+        <h4>Autoria</h4>
+        <p><strong>Aluno:</strong> Conrado Calazans</p>
+        <p><strong>Curso:</strong> Sistemas de Informação</p>
+        <p><strong>Turma:</strong> Noite</p>
+      </div>
+      <div class="coluna redes">
+        <h4>Redes Sociais</h4>
+        <a href="https://github.com/" target="_blank"><img src="/imagens/logo_github.jpg" alt="GitHub"></a>
+        <a href="https://br.linkedin.com/" target="_blank"><img src="/imagens/logo_linkedin.jpg" alt="Linkedin"></a>
+        <a href="https://www.youtube.com/" target="_blank"><img src="/imagens/logo_yt.jpg" alt="Youtube"></a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Carrega primeiro o sistema de autenticação -->
+  <script src="/script/auth.js"></script>
+  <!-- Depois carrega o app principal -->
+  <script src="/script/app.js"></script>
+</body>
+</html>

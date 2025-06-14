@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Filme</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+    <header class="header">
+        <a class="logo" href="index.html">🎬 <strong>Página inicial</strong></a>
+        
+        <nav class="nav">
+            <ul class="menu">
+                <li><a href="index.html?filtro=novos">Novos</a></li>
+                <li><a href="index.html?filtro=populares">Populares</a></li>
+                <li><a href="index.html?filtro=netflix">Netflix</a></li>
+            </ul>
+        </nav>
+        
+        <div class="actions">
+            <!-- Links de login/logout serão inseridos pelo JavaScript -->
+        </div>
+    </header>
+
+    <main>
+        <section id="detalhes">
+            <!-- Detalhes do filme serão carregados aqui -->
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>Todos os direitos desta página estão reservados.</p>
+    </footer>
+
+    <!-- Carrega primeiro o sistema de autenticação -->
+    <script src="/script/auth.js"></script>
+    <!-- Depois carrega o app principal -->
+    <script src="/script/app.js"></script>
+</body>
+</html>

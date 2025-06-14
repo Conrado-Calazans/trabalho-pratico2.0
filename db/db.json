@@ -1,0 +1,31 @@
+{
+  "usuarios": [
+    {
+      "id": "1",
+      "nome": "Admin",
+      "email": "admin@teste.com",
+      "senha": "123456"
+    },
+    {
+      "id": "2",
+      "nome": "João Silva",
+      "email": "joao@teste.com",
+      "senha": "senha123"
+    },
+    {
+      "id": "3b11",
+      "nome": "caco",
+      "email": "caco123@g",
+      "senha": "123456"
+    }
+  ],
+  "favoritos": [
+    {
+      "id": "1",
+      "usuarioId": 1,
+      "filmeId": "tt0371746",
+      "titulo": "Iron Man",
+      "poster": "https://m.media-amazon.com/images/M/MV5BMTczNTI2ODUwOF5BMl5BanBnXkFtZTcwMTU0NTIzMw@@._V1_SX300.jpg"
+    }
+  ]
+}

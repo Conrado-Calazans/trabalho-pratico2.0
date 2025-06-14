@@ -1,0 +1,281 @@
+
+#detalhes {
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#detalhes img {
+    max-width: 250px;
+    margin: 20px 0;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#detalhes h2 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+#detalhes p {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+#detalhes p strong {
+    font-weight: bold;
+}
+
+html {
+    height: 100%;
+}
+
+body, ul, li p {
+    margin: 0px;
+    padding: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.2rem;
+    align-items: center;
+}
+
+.header a {
+    text-decoration: none;
+    padding: 5px;
+}
+
+img {
+    max-width: 90%;
+    display: block;
+}
+
+.header {
+    background-color: #0e0e10;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 30px;
+    flex-wrap: wrap;
+    gap: 20px;
+    
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #f5c518;
+    text-decoration: none;
+  }
+
+  .nav .menu {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .nav .menu li a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    opacity: 0.8;
+    transition: 0.2s;
+  }
+
+  .nav .menu li a:hover {
+    opacity: 1;
+    font-weight: bold;
+    border-bottom: 2px solid #f5c518;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .actions form {
+    display: flex;
+    background-color: #1c1c1e;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  
+  .actions input {
+    background-color: #2a2a2d;
+    color: white;
+    border: none;
+    padding: 8px 10px;
+    outline: none;
+    font-size: 14px;
+  }
+  
+  .actions button {
+    background-color: transparent;
+    color: #f5c518;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+.flex {
+    display: flex;
+    margin: 0 auto;
+}
+
+form {
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #333;
+    border-radius: 10px;
+    display: flex;
+}
+
+form input {
+    padding: 5px;
+    border: none;
+    outline: none;
+    flex: 1;
+    border-radius: 10px;
+}
+
+form button {
+    padding: 5px 10px;
+    background-color: cornflowerblue;
+    color: white;
+    border: none;
+    cursor: pointer;
+    
+}
+
+form button:hover {
+    background-color: darkblue;
+}
+
+.lista {
+    padding: 5px;
+    margin-top: 0.01px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.item {
+    text-align: center;
+    padding: 50px;
+    width: 200px;
+    margin: 5px;
+    border: 2px solid cornflowerblue;
+}
+
+.item img {
+    width: 200px;
+}
+
+.item:hover {
+    background-color: cornflowerblue;
+    cursor: pointer;
+}
+
+.rodape {
+    border-top: 2px solid lightslategray;
+    padding: 20px;
+    background-color: black;
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+  }
+  
+  .info {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  
+  .coluna {
+    flex: 1;
+    min-width: 50px;
+    margin: 10px;
+    color: white;
+  }
+  
+  .coluna h4 {
+    margin-bottom: 10px;
+    color: cornflowerblue;
+  }
+  
+  .redes a {
+    display: inline-block;
+    margin-right: 10px;
+  }
+  
+  .redes img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 4px solid cornflowerblue;
+
+  }
+  footer{
+    text-align: center;
+    color: white;
+    padding: 20px;
+  }
+  a{
+    color: none;
+    background-color: none;
+    
+  }
+  
+
+@media screen and (min-width: 1024px) {
+    body {
+        background-color: lightblue;
+    }
+    .container {
+        width: 60%;
+    }
+    footer {
+        background-color: lightblue;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    body {
+        background-color: lightgreen;
+    }
+    .container {
+        width: 80%;
+    }
+    footer {
+        background-color: lightgreen;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    body {
+        background-color: lightcoral;
+    }
+    .container {
+        width: 100%;
+    }
+    footer {
+        background-color: lightcoral;
+    }
+}
+
+.destaques {
+    padding: 20px;
+    text-align: center;
+}
+
+.lista-destaques {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
