@@ -229,7 +229,17 @@ form button:hover {
     color: none;
     background-color: none;
     
+  } 
+  #secao-destaques-carrossel{
+    
+    
+    justify-content: center;
+    display: flex;
+    background: lightblue;
+    padding: 40px;
   }
+
+  
   
 
 @media screen and (min-width: 1024px) {
