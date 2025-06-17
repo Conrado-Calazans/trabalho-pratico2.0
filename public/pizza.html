@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gráfico de Usuários</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <div style="width: 400px; height: 400px;">
+        <canvas id="divPieChart"></canvas>
+    </div>
+
+    <script>
+        const userData = {
+            "usuarios": [
+                {
+                    "id": "1",
+                    "login": "admin",
+                    "senha": "123",
+                    "nome": "Administrador do Sistema",
+                    "email": "admin@abc.com",
+                    "admin": true
+                },
+                {
+                    "id": "2",
+                    "login": "user",
+                    "senha": "123",
+                    "nome": "Usuário Comum",
+                    "email": "user@abc.com",
+                    "admin": false
+                }
+                
+            ]
+        };
+
+        // ------------------------------------------------
+        // Dispara a montagem do gráfico após o carregamento da página
+        window.onload = () => {
+            createPieChart(userData.usuarios); // Passamos o array de usuários
+        }
+
+        function createPieChart(data) {
+            // Vamos preparar os dados para a exibição no gráfico.
+            // Para isso, precisamos contar quantos usuários são administradores e quantos não são.
+
+            let adminCount = 0;
+            let nonAdminCount = 0;
+
+            data.forEach(user => {
+                if (user.admin) {
+                    adminCount++;
+                } else {
+                    nonAdminCount++;
+                }
+            });
+
+            // As labels serão as categorias que queremos mostrar no gráfico
+            const labels = ['Administradores', 'Usuários Comuns'];
+            // Os valores serão as contagens para cada categoria
+            const values = [adminCount, nonAdminCount];
+
+            // Obtem o elemento CANVAS da página que vai receber o gráfico
+            const ctx = document.getElementById('divPieChart');
+
+            // Cria o objeto do gráfico passando os parâmetros
+            const userPieChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: values,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.7)', // Cor para Administradores (vermelho)
+                            'rgba(54, 162, 235, 0.7)'  // Cor para Usuários Comuns (azul)
+                        ],
+                        borderColor: [
+                            'rgba(255, 255, 255, 1)', // Borda branca para as fatias
+                            'rgba(255, 255, 255, 1)'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Distribuição de Usuários por Tipo',
+                            font: {
+                                size: 18
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed + ' usuário(s)';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

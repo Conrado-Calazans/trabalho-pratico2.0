@@ -23,6 +23,12 @@
       "nome": "souza",
       "email": "souza123@gmail.com",
       "senha": "123456"
+    },
+    {
+      "id": "2253",
+      "nome": "oiii",
+      "email": "oiii@g",
+      "senha": "123456"
     }
   ],
   "favoritos": [
