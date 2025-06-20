@@ -31,6 +31,11 @@ class AuthManager {
         return this.usuarioLogado !== null;
     }
 
+    // NOVA FUNÇÃO: Verifica se usuário é administrador
+    isAdmin() {
+        return this.isLogado() && this.usuarioLogado.admin === true;
+    }
+
     // Faz login do usuário
     async login(email, senha) {
         try {
@@ -63,11 +68,12 @@ class AuthManager {
                 return { sucesso: false, erro: 'Este email já está cadastrado' };
             }
 
-            // Cria novo usuário
+            // Cria novo usuário (sempre como usuário comum)
             const novoUsuario = {
                 nome,
                 email,
-                senha
+                senha,
+                admin: false // Novos usuários sempre são criados como não-admin
             };
 
             const responsePost = await fetch(`${API_URL}/usuarios`, {
@@ -235,10 +241,16 @@ function atualizarMenu() {
     const formPesquisa = actions.querySelector('form');
     
     if (authManager.isLogado()) {
-        // Usuário logado - mostrar favoritos e logout
+        // Usuário logado - mostrar favoritos, admin (se for admin) e logout
+        let menuAdmin = '';
+        if (authManager.isAdmin()) {
+            menuAdmin = '<a href="crud.html" style="color: white; margin-right: 10px;">👤 Gerenciar Usuários</a>';
+        }
+        
         actions.innerHTML = `
             ${formPesquisa ? formPesquisa.outerHTML : ''}
             <a href="favoritos.html" style="color: white; margin-right: 10px;">Favoritos</a>
+            ${menuAdmin}
             <a href="#" id="btn-logout" style="color: white; margin-right: 10px;">Logout (${authManager.usuarioLogado.nome})</a>
         `;
         

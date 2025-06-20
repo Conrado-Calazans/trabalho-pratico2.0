@@ -4,31 +4,50 @@
       "id": "1",
       "nome": "Admin",
       "email": "admin@teste.com",
-      "senha": "123456"
+      "senha": "123456",
+      "admin": true
     },
     {
       "id": "2",
       "nome": "João Silva",
       "email": "joao@teste.com",
-      "senha": "senha123"
+      "senha": "senha123",
+      "admin": false
     },
     {
       "id": "3b11",
       "nome": "caco",
       "email": "caco123@g",
-      "senha": "123456"
+      "senha": "123456",
+      "admin": false
     },
     {
       "id": "ecf7",
       "nome": "souza",
       "email": "souza123@gmail.com",
-      "senha": "123456"
+      "senha": "123456",
+      "admin": false
     },
     {
       "id": "2253",
       "nome": "oiii",
       "email": "oiii@g",
-      "senha": "123456"
+      "senha": "123456",
+      "admin": false
+    },
+    {
+      "id": "14d0",
+      "nome": "diw",
+      "email": "diw123@gmail.com",
+      "senha": "123456",
+      "admin": false
+    },
+    {
+      "id": "aed7",
+      "nome": "sid",
+      "email": "sid123@g",
+      "senha": "123456",
+      "admin": false
     }
   ],
   "favoritos": [
