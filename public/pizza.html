@@ -1,124 +1,368 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gráfico que identifica a disparidade entre Usuários e Administradores</title>
+    <title>Gráfico Dinâmico - Usuários vs Administradores</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 30px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #333;
+            margin: 0 0 10px 0;
+            font-size: 24px;
+        }
+        
+        .status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .status-item {
+            text-align: center;
+        }
+        
+        .status-item .number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .status-item .label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin-bottom: 20px;
+        }
+        
+        .controls {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+        
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .connection-status {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .connection-status.connected {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .connection-status.disconnected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        
+        .loading.show {
+            display: block;
+        }
+        
+        .last-update {
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            margin-top: 15px;
+        }
+    </style>
 </head>
 <body>
-
-    <div style="width: 400px; height: 400px;">
-        <canvas id="divPieChart"></canvas>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Distribuição de Usuários</h1>
+            <div>
+                <button id="refreshBtn" class="btn">🔄 Atualizar Agora</button>
+                <button id="toggleAutoRefresh" class="btn">⏸️ Pausar Auto-Refresh</button>
+                <span id="connectionStatus" class="connection-status connected">● Conectado</span>
+            </div>
+        </div>
+        
+        <div class="status">
+            <div class="status-item">
+                <div id="totalUsers" class="number">-</div>
+                <div class="label">Total de Usuários</div>
+            </div>
+            <div class="status-item">
+                <div id="adminCount" class="number">-</div>
+                <div class="label">Administradores</div>
+            </div>
+            <div class="status-item">
+                <div id="userCount" class="number">-</div>
+                <div class="label">Usuários Comuns</div>
+            </div>
+        </div>
+        
+        <div class="loading" id="loading">
+            <p>🔄 Carregando dados...</p>
+        </div>
+        
+        <div class="chart-container">
+            <canvas id="userChart"></canvas>
+        </div>
+        
+        <div class="last-update" id="lastUpdate">
+            Última atualização: -
+        </div>
     </div>
 
     <script>
-        const userData = {
-            "usuarios": [
-                {
-                    "id": "1",
-                    "login": "admin",
-                    "senha": "123",
-                    "nome": "Administrador do Sistema",
-                    "email": "admin@abc.com",
-                    "admin": true
-                },
-                {
-                    "id": "2",
-                    "login": "user",
-                    "senha": "123",
-                    "nome": "Usuário Comum",
-                    "email": "user@abc.com",
-                    "admin": false
-                },
-                {
-                    "id": "3",
-                    "login": "user",
-                    "senha": "123",
-                    "nome": "Usuário Comum",
-                    "email": "user@abc.com",
-                    "admin": false
-                }
+        class DynamicUserChart {
+            constructor() {
+                this.chart = null;
+                this.autoRefreshInterval = null;
+                this.isAutoRefreshEnabled = true;
+                this.apiUrl = 'http://localhost:3000/usuarios'; // Ajuste para sua URL do json-server
+                this.refreshInterval = 3000; // 3 segundos
                 
-            ]
-        };
-
-        // ------------------------------------------------
-        // Dispara a montagem do gráfico após o carregamento da página
-        window.onload = () => {
-            createPieChart(userData.usuarios); // Passamos o array de usuários
-        }
-
-        function createPieChart(data) {
-            // Vamos preparar os dados para a exibição no gráfico.
-            // Para isso, precisamos contar quantos usuários são administradores e quantos não são.
-
-            let adminCount = 0;
-            let nonAdminCount = 0;
-
-            data.forEach(user => {
-                if (user.admin) {
-                    adminCount++;
-                } else {
-                    nonAdminCount++;
+                this.init();
+            }
+            
+            async init() {
+                this.setupEventListeners();
+                await this.loadData();
+                this.startAutoRefresh();
+            }
+            
+            setupEventListeners() {
+                document.getElementById('refreshBtn').addEventListener('click', () => {
+                    this.loadData();
+                });
+                
+                document.getElementById('toggleAutoRefresh').addEventListener('click', () => {
+                    this.toggleAutoRefresh();
+                });
+            }
+            
+            async loadData() {
+                try {
+                    this.showLoading(true);
+                    this.updateConnectionStatus(true);
+                    
+                    const response = await fetch(this.apiUrl);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    const usuarios = await response.json();
+                    this.updateChart(usuarios);
+                    this.updateStats(usuarios);
+                    this.updateLastUpdateTime();
+                    
+                } catch (error) {
+                    console.error('Erro ao carregar dados:', error);
+                    this.updateConnectionStatus(false);
+                } finally {
+                    this.showLoading(false);
                 }
-            });
-
-            // As labels serão as categorias que queremos mostrar no gráfico
-            const labels = ['Administradores', 'Usuários Comuns'];
-            // Os valores serão as contagens para cada categoria
-            const values = [adminCount, nonAdminCount];
-
-            // Obtem o elemento CANVAS da página que vai receber o gráfico
-            const ctx = document.getElementById('divPieChart');
-
-            // Cria o objeto do gráfico passando os parâmetros
-            const userPieChart = new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels: labels,
+            }
+            
+            updateChart(usuarios) {
+                const adminCount = usuarios.filter(user => user.admin === true).length;
+                const userCount = usuarios.filter(user => user.admin === false).length;
+                
+                const data = {
+                    labels: ['Administradores', 'Usuários Comuns'],
                     datasets: [{
-                        data: values,
+                        data: [adminCount, userCount],
                         backgroundColor: [
-                            'rgba(255, 99, 132, 0.7)', // Cor para Administradores (vermelho)
-                            'rgba(54, 162, 235, 0.7)'  // Cor para Usuários Comuns (azul)
+                            'rgba(255, 99, 132, 0.8)',
+                            'rgba(54, 162, 235, 0.8)'
                         ],
                         borderColor: [
-                            'rgba(255, 255, 255, 1)', // Borda branca para as fatias
-                            'rgba(255, 255, 255, 1)'
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)'
                         ],
-                        borderWidth: 2
+                        borderWidth: 2,
+                        hoverBackgroundColor: [
+                            'rgba(255, 99, 132, 0.9)',
+                            'rgba(54, 162, 235, 0.9)'
+                        ]
                     }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Distribuição de Usuários por Tipo',
-                            font: {
-                                size: 18
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    let label = context.label || '';
-                                    if (label) {
-                                        label += ': ';
+                };
+                
+                if (this.chart) {
+                    // Atualiza gráfico existente
+                    this.chart.data = data;
+                    this.chart.update('active');
+                } else {
+                    // Cria novo gráfico
+                    const ctx = document.getElementById('userChart').getContext('2d');
+                    this.chart = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: data,
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    text: 'Distribuição por Tipo de Usuário',
+                                    font: {
+                                        size: 18,
+                                        weight: 'bold'
+                                    },
+                                    color: '#333'
+                                },
+                                legend: {
+                                    position: 'bottom',
+                                    labels: {
+                                        padding: 20,
+                                        font: {
+                                            size: 14
+                                        }
                                     }
-                                    if (context.parsed !== null) {
-                                        label += context.parsed + ' usuário(s)';
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            const label = context.label || '';
+                                            const value = context.parsed || 0;
+                                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                            const percentage = ((value / total) * 100).toFixed(1);
+                                            return `${label}: ${value} usuário(s) (${percentage}%)`;
+                                        }
                                     }
-                                    return label;
                                 }
+                            },
+                            animation: {
+                                animateRotate: true,
+                                animateScale: true
                             }
                         }
-                    }
+                    });
                 }
-            });
+            }
+            
+            updateStats(usuarios) {
+                const adminCount = usuarios.filter(user => user.admin === true).length;
+                const userCount = usuarios.filter(user => user.admin === false).length;
+                const totalUsers = usuarios.length;
+                
+                document.getElementById('totalUsers').textContent = totalUsers;
+                document.getElementById('adminCount').textContent = adminCount;
+                document.getElementById('userCount').textContent = userCount;
+            }
+            
+            updateConnectionStatus(connected) {
+                const statusElement = document.getElementById('connectionStatus');
+                if (connected) {
+                    statusElement.className = 'connection-status connected';
+                    statusElement.textContent = '● Conectado';
+                } else {
+                    statusElement.className = 'connection-status disconnected';
+                    statusElement.textContent = '● Desconectado';
+                }
+            }
+            
+            showLoading(show) {
+                const loadingElement = document.getElementById('loading');
+                loadingElement.className = show ? 'loading show' : 'loading';
+            }
+            
+            updateLastUpdateTime() {
+                const now = new Date();
+                const timeString = now.toLocaleTimeString('pt-BR');
+                document.getElementById('lastUpdate').textContent = `Última atualização: ${timeString}`;
+            }
+            
+            startAutoRefresh() {
+                if (this.autoRefreshInterval) {
+                    clearInterval(this.autoRefreshInterval);
+                }
+                
+                this.autoRefreshInterval = setInterval(() => {
+                    if (this.isAutoRefreshEnabled) {
+                        this.loadData();
+                    }
+                }, this.refreshInterval);
+            }
+            
+            toggleAutoRefresh() {
+                const button = document.getElementById('toggleAutoRefresh');
+                
+                if (this.isAutoRefreshEnabled) {
+                    this.isAutoRefreshEnabled = false;
+                    button.textContent = '▶️ Iniciar Auto-Refresh';
+                    clearInterval(this.autoRefreshInterval);
+                } else {
+                    this.isAutoRefreshEnabled = true;
+                    button.textContent = '⏸️ Pausar Auto-Refresh';
+                    this.startAutoRefresh();
+                }
+            }
         }
+        
+        // Inicializa o gráfico quando a página carregar
+        window.addEventListener('DOMContentLoaded', () => {
+            new DynamicUserChart();
+        });
     </script>
 </body>
 </html>
